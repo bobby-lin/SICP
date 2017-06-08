@@ -1,0 +1,50 @@
+================================================================================
+SICP (pp.25-26)
+================================================================================
+
+ex1.6: comparing cond v.s. if
+(define (sqrt-iter guess x)
+  (new-if (good-enough? guess x)
+    guess
+    (sqrt-iter (improve guess x) x)))
+
+When the procedure is defined in terms of cond, both then-clause and else-clause will be evaluated. Thus, it will not stop calling itself. However, if we define using if (a special form), then only one of the clauses will be called.
+
+ex1.7: good-enough? test
+(define (good-enough? guess x)
+  (< (abs (- (square guess) x)) 0.001))
+
+Right now, we square the 'guess' to check if the difference with x is small (0.001). But if the x is smaller than 0.001, then we will have difficulty estimating the difference between 'guess' and x. For example if x is 0.00009, then the difference between x and 'guess' will be smaller than 0.001. But it does not tell allow us to estimate whether the difference is insignificant.
+If x is a very large number (e.g. 999999999), then the algorithm will get stucked (good-enough? returning #f) because the difference between x and 'guess' will never be within 0.001.
+
+Alternative strategy
+(define (good-enough?) guess prev-guess
+  (< (abs (- guess prev-guess)) (* guess 0.001))
+)
+
+Instead of estimating with a fixed value (of 0.001), our test will use a value that is proportionate to whether x is a very large and very small number.
+
+ex1.8: Newton's approximation for cube root of x
+(define (cube-root x)
+  (cube-iter 1.0 x)
+)
+
+(define (cube-iter guess x)
+  (if(good-enough? guess x)
+    guess
+    (cube-iter (improve guess x) x)
+  )
+)
+
+(define (good-enough? guess x)
+  (< (abs (- (cube guess) x)) 0.001)
+)
+
+(define (cube x) (* x x x))
+
+(define (improve guess x)
+  (/ (+ (/ x (* guess guess)) (* 2 guess)) 3)
+)
+
+;Testcases:
+;(cube-root 64)
