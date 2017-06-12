@@ -1,0 +1,22 @@
+Ex 1.16: Designing an iterative exponentiation
+(define (square x) (* x x))
+
+(define (even n)
+  (= (remainder n 2) 0))
+
+(define (fast-expt b n)
+  (cond ((= n 0) 1)
+        ((even n) (square (fast-expt b (/ n 2))))
+        (else (* b (fast-expt b (- n 1))))))
+
+;(Hint: Using the observation that (b^(n/2))^2 = (b^2)^(n/2), keep,
+;along with the exponent n and the base b, an additional state variable a,
+;and define the state transformation in such a way that the product a and b^n is ;unchanged from state to state. At the beginning of the process a is taken to be ;1, and the answer is given by the value of a at the end of the process.
+
+
+(define (fast-expt-iter base n product)
+  (cond ((= n 0) product)
+        ((even n) (fast-expt-iter (square base) (/ n 2) product))
+        (else (fast-expt-iter base (- n 1) (* product base)))))
+
+(fast-expt-iter 2 9 1)
