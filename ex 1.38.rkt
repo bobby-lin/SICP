@@ -1,0 +1,26 @@
+(define tolerance 0.00001)
+
+(define (cont-frac n d k)
+  (define (frac i)
+    (if (< i k)
+        (/ (n i) (+ (d i) (frac (+ i 1))))
+        (/ (n i) (d i))))
+  (frac 1))
+
+(define (euler-approx f first-guess)
+  (define (close-enough? v1 v2)
+    (< (abs (- v1 v2)) tolerance))
+  (define (try guess)
+    (let ((next (+ (f (lambda (i) 1.0) (lambda (i) (if(= (modulo i 3) 2) (* 2 (+ (quotient i 3) 1)) 1)) guess) 2)))
+      (display guess)
+      (newline)
+      (display next)
+      (newline)
+      (if (close-enough? guess next)
+          next
+          (try next))))
+  (try first-guess))
+
+(euler-approx cont-frac 0.09)
+; d = (lambda (i) (if(= (modulo i 3) 2) (* 2 (+ (quotient i 3) 1)) 1)
+;(+ (cont-frac (lambda (i) 1.0) (lambda (i) (if(= (modulo i 3) 2) (* 2 (+ (quotient i 3) 1.0)) 1.0)) 2) 2)
