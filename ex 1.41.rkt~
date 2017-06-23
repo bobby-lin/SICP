@@ -1,4 +1,0 @@
-; Exercise 1.41 - Passing procedures as arguments
-
-(define (inc n) (+ n 1))
-(inc 5)
