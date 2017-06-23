@@ -1,5 +1,0 @@
-; Exercise 1.42 - Composition of functions f(g(x))
-
-(define (square x) (* x x))
-(define (inc x) (+ x 1))
-
